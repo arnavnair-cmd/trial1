@@ -1,65 +1,303 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase';
+
+export default function HomePage() {
+  const [posts, setPosts] = useState([]);
+  const [comments, setComments] = useState({});
+  const [newComment, setNewComment] = useState({});
+  const [newPost, setNewPost] = useState('');
+  const [profiles, setProfiles] = useState({});
+  const [imageFile, setImageFile] = useState(null);
+  const [latestAnnouncement, setLatestAnnouncement] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    fetchLatestAnnouncement();
+  }, []);
+
+  async function fetchLatestAnnouncement() {
+    const dismissed = sessionStorage.getItem('announcementDismissed');
+    if (dismissed) return;
+
+    const { data } = await supabase
+      .from('announcements')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (data) {
+      setLatestAnnouncement(data);
+      setShowPopup(true);
+    }
+  }
+
+
+
+  useEffect(() => {
+    fetchPosts();
+    fetchComments();
+  }, []);
+
+  // ---------------- POSTS ----------------
+
+  async function fetchPosts() {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setPosts(data || []);
+  }
+
+
+  async function createPost(e) {
+    e.preventDefault();
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    let imageUrl = null;
+
+    if (imageFile) {
+      const fileExt = imageFile.name.split('.').pop();
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('post-images')
+        .upload(fileName, imageFile);
+
+      if (uploadError) {
+        console.error(uploadError);
+        return;
+      }
+
+      const { data } = supabase.storage
+        .from('post-images')
+        .getPublicUrl(fileName);
+
+      imageUrl = data.publicUrl;
+    }
+
+    await supabase.from('posts').insert({
+      user_id: user.id,
+      content: newPost,
+      image_url: imageUrl,
+    });
+
+    setNewPost('');
+    setImageFile(null);
+    fetchPosts();
+  }
+
+
+  // ---------------- COMMENTS ----------------
+
+  async function fetchComments() {
+    const { data, error } = await supabase
+      .from('comments')
+      .select('*')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    const grouped = {};
+    data.forEach((c) => {
+      if (!grouped[c.post_id]) grouped[c.post_id] = [];
+      grouped[c.post_id].push(c);
+    });
+
+    setComments(grouped);
+  }
+
+
+  async function addComment(postId) {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    await supabase.from('comments').insert({
+      post_id: postId,
+      user_id: user.id,
+      comment: newComment[postId],
+    });
+
+    setNewComment({ ...newComment, [postId]: '' });
+    fetchComments();
+  }
+
+  //-----------------FETCH USER PROFILES ----------------
+  async function fetchProfiles() {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, name');
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    const map = {};
+    data.forEach((p) => {
+      map[p.id] = p.name;
+    });
+
+    setProfiles(map);
+  }
+  useEffect(() => {
+    fetchPosts();
+    fetchComments();
+    fetchProfiles();
+  }, []);
+
+
+
+  // ---------------- UI ----------------
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div style={{ padding: '40px', maxWidth: '700px', margin: 'auto' }}>
+      <h1>Event Feed</h1>
+
+      {/* CREATE POST */}
+      <form onSubmit={createPost}>
+        <textarea
+          placeholder="Post an event update..."
+          value={newPost}
+          onChange={(e) => setNewPost(e.target.value)}
+          required
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
+        />
+
+        <br />
+        <button type="submit">Post</button>
+      </form>
+
+      <hr />
+
+
+      {/*Announcements */}
+      {showPopup && latestAnnouncement && (
+        <div
+          style={{
+            background: '#222',
+            border: '1px solid #555',
+            padding: '20px',
+            borderRadius: '10px',
+            marginBottom: '30px',
+            position: 'relative',
+          }}
+        >
+          <button
+            onClick={() => {
+              sessionStorage.setItem('announcementDismissed', 'true');
+              setShowPopup(false);
+            }}
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              cursor: 'pointer',
+            }}
+          >
+            ✕
+          </button>
+
+          <h3>{latestAnnouncement.title}</h3>
+          <p>{latestAnnouncement.message}</p>
+
+          <small>
+            {new Date(latestAnnouncement.created_at).toLocaleString('en-IN')}
+          </small>
+        </div>
+      )}
+
+
+      {/* POSTS */}
+      {posts.map((post) => (
+        <div
+          key={post.id}
+          style={{
+            border: '1px solid #ccc',
+            padding: '15px',
+            marginTop: '25px',
+            borderRadius: '8px',
+          }}
+        >
+
+          <p>
+            <strong>{profiles[post.user_id] || 'Unknown User'}</strong>
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+          <p>{post.content}</p>
+
+          {post.image_url && (
+            <img
+              src={post.image_url}
+              alt="Post image"
+              style={{
+                width: '100%',
+                marginTop: '10px',
+                borderRadius: '8px',
+              }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          )}
+
+
+          <small>
+            {new Date(post.created_at).toLocaleString('en-IN', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true,
+            })}
+          </small>
+
+
+
+
+          {/* COMMENTS */}
+          <div style={{ marginTop: '15px' }}>
+            <strong>Comments</strong>
+
+            {(comments[post.id] || []).map((c) => (
+              <p key={c.id}>
+                <strong>{profiles[c.user_id] || 'User'}:</strong> {c.comment}
+              </p>
+            ))
+            }
+
+            {/* ADD COMMENT */}
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              value={newComment[post.id] || ''}
+              onChange={(e) =>
+                setNewComment({ ...newComment, [post.id]: e.target.value })
+              }
+              style={{ width: '100%', marginTop: '10px' }}
+            />
+
+            <button onClick={() => addComment(post.id)}>
+              Comment
+            </button>
+          </div>
         </div>
-      </main>
+      ))}
     </div>
   );
 }

@@ -3,35 +3,31 @@
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 
-export default function SignupPage() {
+export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  async function handleSignup(e) {
+  async function handleLogin(e) {
     e.preventDefault();
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) {
       setMessage(error.message);
-      return;
-    }  
-     
-
-    // Redirect AFTER everything succeeds
-    window.location.href = '/login';
+    } else {
+      window.location.href = '/dashboard';
+    }
   }
-
 
   return (
     <div style={{ padding: '40px' }}>
-      <h1>Sign Up</h1>
+      <h1>Login</h1>
 
-      <form onSubmit={handleSignup}>
+      <form onSubmit={handleLogin}>
         <input
           type="email"
           placeholder="Email"
@@ -50,7 +46,7 @@ export default function SignupPage() {
         />
         <br /><br />
 
-        <button type="submit">Sign Up</button>
+        <button type="submit">Login</button>
       </form>
 
       <p>{message}</p>
