@@ -1,0 +1,16 @@
+.questionsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+}
+
+.submitBtn{
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: black;
+    color:white;
+    font-size: 15px;
+    cursor: pointer;
+}

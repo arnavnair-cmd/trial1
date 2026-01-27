@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@300;400;700&family=Roboto:wght@300;400;700&display=swap');
+
+.navgBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #8009BD;
+  height: 45px;
+  width: 55%;
+  border-radius: 10px;
+  margin: 15px auto;
+}
+
+/* scoped ul */
+.navgBar ul {
+  display: flex;
+  list-style: none;
+  justify-content: space-evenly;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* scoped link */
+.aTitle {
+  font-size: 25px;
+  color: white;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-family: "Amatic SC", sans-serif;
+  font-weight: 600;
+}
+
+/* scoped hover */
+.navgBar li .aTitle:hover {
+  background-color: rgba(255, 255, 255, 0.258);
+}

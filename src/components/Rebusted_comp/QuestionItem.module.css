@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+.questionBox{
+  flex: 0 1 40%;        /* grow shrink width */
+  max-width: 45%;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.5s ease;
+  gap:20px;
+}
+.questionBoxContent{
+    width: 100%;       /* fill its 45% container */
+    border:4px dashed #dbfaca;
+    border-radius: 20px;
+    padding:15px;
+    background-color: #e6d1f2d0;
+}
+
+.questionBox:hover{
+  transform: scale(1.02);
+}
+.questionText{
+  font-family: "lato";
+  font-weight: 600;
+  font-style: italic;
+  font-size: 25px;;
+}
+
+.imageStyle{
+  border-radius: 20px;
+}
+
+.inputStyle{
+  border:2px solid #d3fbbb;
+  border-radius: 20px;
+  padding:7px;
+  margin-top: 6px;
+  width:60%
+}

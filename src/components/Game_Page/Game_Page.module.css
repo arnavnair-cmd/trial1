@@ -1,0 +1,11 @@
+.page {
+  padding: 40px;
+  align-items: center;
+}
+
+.boxes {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+  justify-content: center;
+}

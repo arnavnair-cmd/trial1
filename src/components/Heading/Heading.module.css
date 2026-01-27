@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Fredericka+the+Great&display=swap');
+
+.logoHeader{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    align-content: center;
+    gap:15px;
+}
+.logo{
+    width: 100px;
+    height: 100px
+}
+
+.heading{
+  text-align: center;
+  font-size: 55px;
+  font-family: "Fredericka the Great", serif;
+  font-weight: 500;
+}
