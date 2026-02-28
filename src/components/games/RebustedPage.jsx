@@ -44,24 +44,36 @@ export default function RebustedPage() {
 
       setUser(user);
 
-      // 2️⃣ Check if user already submitted
-      const { data: existing, error: checkError } = await supabase
-        .from("rebusted_submissions")
-        .select("id")
-        .eq("user_id", user.id)
-        .limit(1);
+      // 1️⃣ Get current quiz version
+      const { data: meta } = await supabase
+        .from("rebusted_meta")
+        .select("current_version")
+        .eq("id", 1)
+        .single();
 
-      if (checkError) {
-        setError(checkError.message);
+      if (!meta) {
+        setError("Quiz version not initialized.");
         setLoading(false);
         return;
       }
+
+      const currentVersion = meta.current_version;
+
+
+      // 2️⃣ Check submission for THIS version
+      const { data: existing } = await supabase
+        .from("rebusted_submissions")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("quiz_version", currentVersion)
+        .limit(1);
 
       if (existing?.length > 0) {
         setAlreadySubmitted(true);
         setLoading(false);
         return;
       }
+
 
       // 3️⃣ Fetch questions
       const { data, error } = await supabase
@@ -101,6 +113,21 @@ export default function RebustedPage() {
       return;
     }
 
+    // Get current quiz version
+    const { data: meta, error: metaError } = await supabase
+      .from("rebusted_meta")
+      .select("current_version")
+      .eq("id", 1)
+      .single();
+
+    if (metaError || !meta) {
+      setError("Quiz version not found");
+      setSubmitting(false);
+      return;
+    }
+
+    const currentVersion = meta.current_version;
+
     const submissions = questions.map((q) => {
       const userAnswer = answers[q.id] || "";
 
@@ -108,6 +135,7 @@ export default function RebustedPage() {
         question_id: q.id,
         user_id: user.id,
         submitted_answer: userAnswer,
+        quiz_version: currentVersion, // ✅ comma added
         is_correct:
           userAnswer.trim().toLowerCase() ===
           q.correct_phrase.trim().toLowerCase(),
@@ -125,6 +153,7 @@ export default function RebustedPage() {
       router.push("/games/rebusted/results");
     }
   };
+
 
 
   // -------- UI STATES --------
@@ -149,7 +178,7 @@ export default function RebustedPage() {
         minHeight: "100vh",
       }}
     >
-      
+
 
       <ErrorMessage message={error} />
 

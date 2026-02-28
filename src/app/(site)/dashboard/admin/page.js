@@ -47,7 +47,7 @@ export default function AdminDashboard() {
         </li>
 
         <li>
-          <Link href="/admin/crosswords">🧩 Manage Crosswords</Link>
+          <Link href="/dashboard/admin/crosswords">🧩 Manage Crosswords</Link>
         </li>
 
         <li>

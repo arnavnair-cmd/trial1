@@ -25,20 +25,38 @@ export default function RebustedManager() {
 
   // Add new question
   async function addQuestion(e) {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
-    await supabase.from('rebusted_questions').insert({
-      imageurl: imageurl,
-      correct_phrase: phrase
-    })
+    const { error } = await supabase
+      .from("rebusted_questions")
+      .insert({
+        imageurl: imageurl,
+        correct_phrase: phrase,
+      });
 
-    setImageurl
-('')
-    setPhrase('')
-    setLoading(false)
-    fetchQuestions()
+    if (!error) {
+      // 🔥 Increase quiz version
+      const { data: meta } = await supabase
+        .from("rebusted_meta")
+        .select("current_version")
+        .eq("id", 1)
+        .single();
+
+      await supabase
+        .from("rebusted_meta")
+        .update({
+          current_version: meta.current_version + 1,
+        })
+        .eq("id", 1);
+    }
+
+    setImageurl("");
+    setPhrase("");
+    setLoading(false);
+    fetchQuestions();
   }
+
 
   // Delete question
   async function deleteQuestion(id) {
@@ -47,8 +65,50 @@ export default function RebustedManager() {
       .delete()
       .eq('id', id)
 
+    await supabase
+      .from('rebusted_meta')
+      .update({ current_version: Date.now() })
+      .eq('id', 1);
+    async function addQuestion(e) {
+      e.preventDefault();
+      setLoading(true);
+
+      const { error } = await supabase
+        .from("rebusted_questions")
+        .insert({
+          imageurl: imageurl,
+          correct_phrase: phrase,
+        });
+
+      if (!error) {
+        // 🔥 Increase quiz version
+        const { data: meta } = await supabase
+          .from("rebusted_meta")
+          .select("current_version")
+          .eq("id", 1)
+          .single();
+
+        await supabase
+          .from("rebusted_meta")
+          .update({
+            current_version: meta.current_version + 1,
+          })
+          .eq("id", 1);
+      }
+
+      setimageurl("");
+      setPhrase("");
+      setLoading(false);
+      fetchQuestions();
+    }
+
+
+
     fetchQuestions()
   }
+
+
+
 
   return (
     <div>
@@ -60,7 +120,7 @@ export default function RebustedManager() {
           placeholder="Image URL"
           value={imageurl}
           onChange={(e) => setImageurl
-        (e.target.value)}
+            (e.target.value)}
           required
         />
 

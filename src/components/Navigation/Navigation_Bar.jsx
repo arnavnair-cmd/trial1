@@ -36,7 +36,7 @@ export default function Navigation_Bar() {
   return (
     <nav className={styles.navgBar}>
       <ul>
-        <li><Link href="/"  className={styles.aTitle}>Home</Link></li>
+        <li><Link href="/home"  className={styles.aTitle}>Home</Link></li>
         <li><Link href="/games"  className={styles.aTitle}>Games</Link></li>
         <li><Link href="/essays"  className={styles.aTitle}>Essays</Link></li>
         <li><Link href="/announcements" className={styles.aTitle}>Announcements</Link></li>

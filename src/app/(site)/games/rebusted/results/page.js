@@ -36,8 +36,6 @@ export default function RebustedResultsPage() {
 
   return (
     <div style={{ padding: '40px' }}>
-      <Heading />
-      <Navigation_Bar />
 
       <h1>🧠 ReBusted Results</h1>
       <p>

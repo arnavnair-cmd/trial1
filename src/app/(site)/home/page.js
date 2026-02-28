@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import style from './HomePage.module.css';
+
 
 export default function HomePage() {
   const [posts, setPosts] = useState([]);
@@ -164,140 +166,143 @@ export default function HomePage() {
   // ---------------- UI ----------------
 
   return (
-    <div style={{ padding: '40px', maxWidth: '700px', margin: 'auto' }}>
-      <h1>Event Feed</h1>
+    <div className={style.container}>
+      <h1 className={style.pageTitle}>Event Feed</h1>
 
-      {/* CREATE POST */}
-      <form onSubmit={createPost}>
+      <form onSubmit={createPost} className={style.postForm}>
         <textarea
+          className={style.textArea}
           placeholder="Post an event update..."
           value={newPost}
           onChange={(e) => setNewPost(e.target.value)}
           required
         />
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImageFile(e.target.files[0])}
-        />
+        <div className={style.formBottom}>
+          <label className={style.fileLabel}>
+            Upload Image
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
+              hidden
+            />
+          </label>
 
-        <br />
-        <button type="submit">Post</button>
+          <button type="submit" className={style.postButton}>
+            Post
+          </button>
+        </div>
       </form>
 
       <hr />
 
 
+
       {/*Announcements */}
-      {showPopup && latestAnnouncement && (
-        <div
-          style={{
-            background: '#222',
-            border: '1px solid #555',
-            padding: '20px',
-            borderRadius: '10px',
-            marginBottom: '30px',
-            position: 'relative',
-          }}
-        >
-          <button
-            onClick={() => {
-              sessionStorage.setItem('announcementDismissed', 'true');
-              setShowPopup(false);
-            }}
+      {
+        showPopup && latestAnnouncement && (
+          <div
             style={{
-              position: 'absolute',
-              top: '10px',
-              right: '10px',
-              cursor: 'pointer',
+              background: '#222',
+              border: '1px solid #555',
+              padding: '20px',
+              borderRadius: '10px',
+              marginBottom: '30px',
+              position: 'relative',
             }}
           >
-            ✕
-          </button>
+            <button
+              onClick={() => {
+                sessionStorage.setItem('announcementDismissed', 'true');
+                setShowPopup(false);
+              }}
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                cursor: 'pointer',
+              }}
+            >
+              ✕
+            </button>
 
-          <h3>{latestAnnouncement.title}</h3>
-          <p>{latestAnnouncement.message}</p>
+            <h3>{latestAnnouncement.title}</h3>
+            <p>{latestAnnouncement.message}</p>
 
-          <small>
-            {new Date(latestAnnouncement.created_at).toLocaleString('en-IN')}
-          </small>
-        </div>
-      )}
+            <small>
+              {new Date(latestAnnouncement.created_at).toLocaleString('en-IN')}
+            </small>
+          </div>
+        )
+      }
 
 
       {/* POSTS */}
-      {posts.map((post) => (
-        <div
-          key={post.id}
-          style={{
-            border: '1px solid #ccc',
-            padding: '15px',
-            marginTop: '25px',
-            borderRadius: '8px',
-          }}
-        >
+      {
+        posts.map((post) => (
+          <div
+            key={post.id} className={style.feedCard}
+          >
 
-          <p>
-            <strong>{profiles[post.user_id] || 'Unknown User'}</strong>
-          </p>
-          <p>{post.content}</p>
+            <p>
+              <strong>{profiles[post.user_id] || 'Unknown User'}</strong>
+            </p>
+            <p>{post.content}</p>
 
-          {post.image_url && (
-            <img
-              src={post.image_url}
-              alt="Post image"
-              style={{
-                width: '100%',
-                marginTop: '10px',
-                borderRadius: '8px',
-              }}
-            />
-          )}
+            {post.image_url && (
+              <div className={style.imageWrapper}>
+                <img
+                  src={post.image_url}
+                  alt="Post image"
+                  className={style.postImage} />
+              </div>
+            )}
 
 
-          <small>
-            {new Date(post.created_at).toLocaleString('en-IN', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: true,
-            })}
-          </small>
+            <small>
+              {new Date(post.created_at).toLocaleString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+              })}
+            </small>
 
 
 
 
-          {/* COMMENTS */}
-          <div style={{ marginTop: '15px' }}>
-            <strong>Comments</strong>
+            {/* COMMENTS */}
+            <div style={{ marginTop: '15px' }}>
+              <strong>Comments</strong>
 
-            {(comments[post.id] || []).map((c) => (
-              <p key={c.id}>
-                <strong>{profiles[c.user_id] || 'User'}:</strong> {c.comment}
-              </p>
-            ))
-            }
-
-            {/* ADD COMMENT */}
-            <input
-              type="text"
-              placeholder="Add a comment..."
-              value={newComment[post.id] || ''}
-              onChange={(e) =>
-                setNewComment({ ...newComment, [post.id]: e.target.value })
+              {(comments[post.id] || []).map((c) => (
+                <p key={c.id}>
+                  <strong>{profiles[c.user_id] || 'User'}:</strong> {c.comment}
+                </p>
+              ))
               }
-              style={{ width: '100%', marginTop: '10px' }}
-            />
 
-            <button onClick={() => addComment(post.id)}>
-              Comment
-            </button>
+              {/* ADD COMMENT */}
+              <input
+                type="text"
+                placeholder="Add a comment..."
+                value={newComment[post.id] || ''}
+                onChange={(e) =>
+                  setNewComment({ ...newComment, [post.id]: e.target.value })
+                }
+                style={{ width: '100%', marginTop: '10px' }}
+              />
+
+              <button onClick={() => addComment(post.id)}>
+                Comment
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))
+      }
+    </div >
   );
 }
