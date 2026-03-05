@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import styles from "./Announcements.module.css";
 
 export default function AnnouncementsPage() {
   const [announcements, setAnnouncements] = useState([]);
@@ -20,22 +21,24 @@ export default function AnnouncementsPage() {
   }
 
   return (
-    <div style={{ padding: '40px' }}>
-      <h1>Announcements</h1>
+    <div className={styles.page}>
+      <div className={styles.mainWrap}>
+        <h1 className={styles.heading}>Announcements</h1>
 
-      {announcements.length === 0 && (
-        <p>No announcements yet.</p>
-      )}
+        {announcements.length === 0 && (
+          <p>No announcements yet.</p>
+        )}
 
-      {announcements.map((a) => (
-        <div key={a.id} style={{ marginBottom: '20px' }}>
-          <h3>{a.title}</h3>
-          <p>{a.message}</p>
-          <small>
-            {new Date(a.created_at).toLocaleString('en-IN')}
-          </small>
-        </div>
-      ))}
+        {announcements.map((a) => (
+          <div key={a.id} className={styles.announcement}>
+            <h3 className={styles.annTitle}>{a.title}</h3>
+            <p>{a.message}</p>
+            <small>
+              {new Date(a.created_at).toLocaleString('en-IN')}
+            </small>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

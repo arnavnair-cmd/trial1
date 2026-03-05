@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { supabase } from '../../../../lib/supabase';
+import styles from './AdminAnnouncements.module.css';
 
 export default function AdminAnnouncements() {
   const [title, setTitle] = useState('');
@@ -17,7 +18,7 @@ export default function AdminAnnouncements() {
       .from('announcements')
       .select('*')
       .order('created_at', { ascending: false });
-    6
+
     setAnnouncements(data || []);
   }
 
@@ -38,6 +39,7 @@ export default function AdminAnnouncements() {
     setMessage('');
     fetchAnnouncements();
   }
+
   async function deleteAnnouncement(id) {
     const confirmDelete = confirm(
       'Are you sure you want to delete this announcement?'
@@ -53,63 +55,71 @@ export default function AdminAnnouncements() {
     if (error) {
       alert(error.message);
     } else {
-      fetchAnnouncements(); // refresh list
+      fetchAnnouncements();
     }
   }
 
-
   return (
-    <div style={{ padding: '40px', maxWidth: '700px', margin: 'auto' }}>
-      <h1>Admin Announcements</h1>
+    <div className={styles.mainWrap}>
+      <div className={styles.mainCont}>
+        <h1 className={styles.heading}>Admin Announcements</h1>
 
-      <form onSubmit={createAnnouncement}>
-        <input
-          placeholder="Announcement title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
+        <h2 className={styles.titles}>Post Announcement</h2>
 
-        <textarea
-          placeholder="Announcement message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          required
-        />
+        <form onSubmit={createAnnouncement}>
+          <div className={styles.postCont}>
+            <input
+              placeholder="Announcement Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+              className={styles.aTitleBox}
+            />
 
-        <button type="submit">Post Announcement</button>
-      </form>
+            <textarea
+              placeholder="Announcement message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+              className={styles.aTextBox}
+            />
 
-      <hr />
+            <button
+              type="submit"
+              className={styles.postBtn}
+            >
+              Post Announcement
+            </button>
+          </div>
+        </form>
 
-      {announcements.map((a) => (
-        <div
-          key={a.id}
-          style={{
-            border: '1px solid #555',
-            padding: '15px',
-            marginBottom: '15px',
-            borderRadius: '8px',
-          }}
-        >
-          <h3>{a.title}</h3>
-          <p>{a.message}</p>
+        <hr className={styles.divider} />
 
-          <small>
-            {new Date(a.created_at).toLocaleString('en-IN')}
-          </small>
+        <h2 className={styles.titles}>Past Announcements</h2>
 
-          <br /><br />
-
-          <button
-            style={{ background: 'red', color: 'white' }}
-            onClick={() => deleteAnnouncement(a.id)}
+        {announcements.map((a) => (
+          <div
+            key={a.id}
+            className={styles.post}
           >
-            🗑 Delete
-          </button>
-        </div>
-      ))}
+            <h3>{a.title}</h3>
+            <p>{a.message}</p>
 
+            <small>
+              {new Date(a.created_at).toLocaleString('en-IN')}
+            </small>
+
+            <br /><br />
+
+            <button
+              className={styles.dltBtn}
+              onClick={() => deleteAnnouncement(a.id)}
+            >
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

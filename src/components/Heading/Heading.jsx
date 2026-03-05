@@ -1,14 +1,15 @@
 'use client';
 
 import styles from './Heading.module.css';
+import { motion } from "framer-motion";
 
 function Heading() {
   return (
     <header className={styles.logoHeader}>
-      <img
+      <motion.img
         src="/assets/lingsocLogo.png"
-        alt="Linguistic Society Logo"
-        className={styles.logo}
+        layoutId="lingsocLogo"
+        style={{ width: "110px" }}
       />
       <h1 className={styles.heading}>
         The Linguistics <br /> Society

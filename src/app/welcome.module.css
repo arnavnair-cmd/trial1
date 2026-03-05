@@ -1,82 +1,101 @@
-.wrapper {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: linear-gradient(
-    135deg,
-    #AEDCAE 0%,
-    #E6D1F2 100%
-  );
-
-  padding: 40px;
+.page{
+  min-height:100vh;
+  background:linear-gradient(135deg,#e9eef5,#d4dbe6);
 }
 
-.card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
 
-  padding: 60px 50px;
-  border-radius: 20px;
+/* HERO */
 
-  max-width: 650px;
-  width: 100%;
-
-  text-align: center;
-
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+.hero{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  max-width:1200px;
+  margin:auto;
+  padding:120px 20px;
 }
 
-.title {
-  font-size: 2.6rem;
-  margin-bottom: 15px;
-  color: #3a2a4d;
+.heroText{
+  max-width:500px;
 }
 
-.title span {
-  color: #6a3cbc;
+.heroText h1{
+  font-size:52px;
+  line-height:1.2;
 }
 
-.subtitle {
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 40px;
+.heroText span{
+  color:#7c3aed;
 }
 
-.actions {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
+.heroText p{
+  margin-top:20px;
+  color:#555;
+  font-size:18px;
 }
 
-.primaryBtn {
-  background-color: #6a3cbc;
-  color: white;
-  padding: 14px 28px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.cta{
+  display:inline-block;
+  margin-top:30px;
+  padding:14px 28px;
+  background:linear-gradient(90deg,#6d28d9,#9333ea);
+  color:white;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:600;
 }
 
-.primaryBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(106, 60, 188, 0.3);
+
+/* HERO IMAGE */
+
+.heroImage img{
+  width:420px;
 }
 
-.secondaryBtn {
-  background-color: #AEDCAE;
-  color: #2f5d3a;
-  padding: 14px 28px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+/* FEATURES */
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+  max-width:1100px;
+  margin:auto;
+  padding:60px 20px;
 }
 
-.secondaryBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(174, 220, 174, 0.4);
+.card{
+  background:white;
+  padding:40px;
+  border-radius:16px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.06);
+  transition:all .25s ease;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 50px rgba(0,0,0,0.1);
+}
+
+
+/* CTA */
+
+.ctaSection{
+  text-align:center;
+  padding:120px 20px;
+}
+
+.ctaSection h2{
+  font-size:36px;
+}
+
+.bigButton{
+  display:inline-block;
+  margin-top:30px;
+  padding:16px 40px;
+  border-radius:14px;
+  background:linear-gradient(90deg,#6d28d9,#9333ea);
+  color:white;
+  text-decoration:none;
+  font-weight:600;
 }

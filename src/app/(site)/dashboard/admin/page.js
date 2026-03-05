@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import styles from './AdminDashboard.module.css';
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -38,27 +39,36 @@ export default function AdminDashboard() {
   if (loading) return <p>Loading admin tools...</p>;
 
   return (
-    <div>
-      <h1>Admin Control Panel</h1>
+    <div className={styles.adminContainer}>
+      <h1 className={styles.adminTitle}>Admin Control Panel</h1>
 
-      <ul style={{ marginTop: '20px' }}>
-        <li>
-          <Link href="/admin/announcements">📢 Manage Announcements</Link>
-        </li>
+      <div className={styles.adminGrid}>
 
-        <li>
-          <Link href="/dashboard/admin/crosswords">🧩 Manage Crosswords</Link>
-        </li>
+        <Link href="/admin/announcements" className={styles.adminCard}>
+          <div className={styles.icon}>📢</div>
+          <h3>Manage Announcements</h3>
+          <p>Create, edit and remove announcements</p>
+        </Link>
 
-        <li>
-          <Link href="/admin/essays">📝 Moderate Essays</Link>
-        </li>
+        <Link href="/dashboard/admin/crosswords" className={styles.adminCard}>
+          <div className={styles.icon}>🧩</div>
+          <h3>Manage Crosswords</h3>
+          <p>Edit puzzles and crossword content</p>
+        </Link>
 
-        <li>
-          <Link href="/dashboard/admin/rebusted">🎮 ReBusted Admin</Link>
-        </li>
-      </ul>
+        <Link href="/admin/essays" className={styles.adminCard}>
+          <div className={styles.icon}>📝</div>
+          <h3>Moderate Essays</h3>
+          <p>Review and approve essay submissions</p>
+        </Link>
 
+        <Link href="/dashboard/admin/rebusted" className={styles.adminCard}>
+          <div className={styles.icon}>🎮</div>
+          <h3>ReBusted Admin</h3>
+          <p>Manage game content and answers</p>
+        </Link>
+
+      </div>
     </div>
   );
 }

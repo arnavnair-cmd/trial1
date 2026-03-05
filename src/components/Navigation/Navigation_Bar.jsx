@@ -44,7 +44,7 @@ export default function Navigation_Bar() {
         {role === "admin" && (
           <li><Link href="/dashboard" className={styles.aTitle}>Dashboard</Link></li>
         )}
-        {user && <li><button onClick={logout} >Logout</button></li>}
+        {user && <li><button className={styles.logoutBtn} onClick={logout} >Logout</button></li>}
       </ul>
     </nav>
   )

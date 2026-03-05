@@ -1,0 +1,10 @@
+.topSection {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 30px 0;
+
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}

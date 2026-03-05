@@ -1,0 +1,64 @@
+.adminContainer {
+  max-width: 1300px;
+  margin: 70px auto;
+  padding: 20px;
+}
+
+.adminTitle {
+  font-size: 40px;
+  margin-bottom: 50px;
+}
+
+/* GRID */
+
+.adminGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 35px;
+}
+
+/* CARDS */
+
+.adminCard {
+  background: white;
+  border-radius: 16px;
+
+  padding: 45px 40px;
+
+  text-decoration: none;
+  color: black;
+
+  border: 2px solid #e7e7e7;
+
+  transition: all 0.25s ease;
+
+  min-height: 180px;
+}
+
+/* HOVER EFFECT */
+
+.adminCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.08);
+  border-color: #7a00cc;
+}
+
+/* ICON */
+
+.icon {
+  font-size: 40px;
+  margin-bottom: 15px;
+}
+
+/* TEXT */
+
+.adminCard h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.adminCard p {
+  color: #555;
+  font-size: 15px;
+  line-height: 1.5;
+}

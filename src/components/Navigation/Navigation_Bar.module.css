@@ -36,3 +36,13 @@
 .navgBar li .aTitle:hover {
   background-color: rgba(255, 255, 255, 0.258);
 }
+.logoutBtn {
+  color: white;
+  background-color:transparent;
+  border:none;
+  border-radius: 10px;
+  font-family: "Amatic SC", sans-serif;
+  font-weight: 600;
+  font-size: 25px;
+  cursor: pointer;
+}

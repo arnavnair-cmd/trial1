@@ -1,0 +1,144 @@
+/* PAGE BACKGROUND */
+
+.authContainer {
+  display: flex;
+  min-height: 100vh;   /* better than height */
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+  padding: 60px;
+
+  
+  background:
+  radial-gradient(circle at 20% 20%, rgba(147,51,234,0.06), transparent 40%),
+  radial-gradient(circle at 80% 80%, rgba(109,40,217,0.05), transparent 40%),
+  linear-gradient(135deg,#eef2f7,#d7dce4);
+}
+
+
+/* FORM CARD */
+
+.formBox {
+  width: 420px;
+  padding: 50px;
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+}
+
+
+/* HEADINGS */
+
+.formBox h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #555;
+  margin-bottom: 30px;
+}
+
+
+/* INPUT LABELS */
+
+.formBox label {
+  display: block;
+  margin-top: 18px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+
+/* INPUT FIELDS */
+
+.formBox input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+
+  border-radius: 8px;
+  border: 1px solid #ddd;
+
+  font-size: 14px;
+
+  transition: all 0.2s ease;
+}
+
+.formBox input:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.15);
+}
+
+
+/* BUTTON */
+
+.formBox button {
+  margin-top: 28px;
+  width: 100%;
+  padding: 14px;
+
+  border: none;
+  border-radius: 10px;
+
+  font-weight: 600;
+  font-size: 15px;
+
+  background: linear-gradient(
+    90deg,
+    #6d28d9,
+    #9333ea
+  );
+
+  color: white;
+
+  cursor: pointer;
+
+  transition: transform 0.15s ease,
+              box-shadow 0.15s ease;
+}
+
+.formBox button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(124,58,237,0.35);
+}
+
+
+/* LINK */
+
+.link {
+  color: #7c3aed;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+/* IMAGE SIDE */
+
+.imageBox {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageBox img {
+  max-width: 650px;   /* prevents overflow */
+  width: 100%;
+  opacity: 0.95;
+
+  animation: float 6s ease-in-out infinite;
+}
+
+
+/* FLOAT ANIMATION */
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0px); }
+}
