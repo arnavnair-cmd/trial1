@@ -172,8 +172,6 @@ export default function RebustedPage() {
     <div
       style={{
         backgroundImage: "url('/assets/bg_rebusted2.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
         padding: "20px",
         minHeight: "100vh",
       }}
