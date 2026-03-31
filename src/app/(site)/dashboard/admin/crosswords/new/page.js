@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import styles from "./CreateCrossword.module.css";
 
 export default function CreateCrossword() {
   const router = useRouter();
@@ -74,6 +75,10 @@ export default function CreateCrossword() {
     setDownClues(down);
   }, [grid]);
 
+  useEffect(() => {
+    console.log("GRID : ", grid)
+  },[grid]);
+
   /* ---------------- GRID HANDLERS ---------------- */
 
   const toggleBlack = (r, c) => {
@@ -115,82 +120,87 @@ export default function CreateCrossword() {
   };
 
   return (
-    <div>
-      <h2>Create Crossword</h2>
+    <div className={styles.container}>
+      <h1 className={styles.heading}>Create Crossword</h1>
 
       <input
-        placeholder="Puzzle Title"
+        className={styles.titleInput}
+        placeholder="Enter Puzzle Title..."
         value={title}
-        onChange={e => setTitle(e.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
       />
 
-      {/* GRID UI */}
-      <div style={{ marginTop: 20 }}>
-        {grid.map((row, r) => (
-          <div key={r} style={{ display: "flex" }}>
-            {row.map((cell, c) => (
-              <div
-                key={c}
-                style={{
-                  width: 40,
-                  height: 40,
-                  border: "1px solid black",
-                  backgroundColor: cell === null ? "black" : "white"
-                }}
-                onDoubleClick={() => toggleBlack(r, c)}
-              >
-                {cell !== null && (
-                  <input
-                    type="text"
-                    maxLength={1}
-                    value={cell}
-                    onChange={e => handleLetterChange(r, c, e.target.value)}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      textAlign: "center",
-                      border: "none"
-                    }}
-                  />
-                )}
+      <div className={styles.mainGrid}>
+
+        {/* LEFT - GRID */}
+        <div className={styles.gridCard}>
+          <div className={styles.grid}>
+            {grid.map((row, r) =>
+              row.map((cell, c) => (
+                <div
+                  key={`${r}-${c}`}
+                  className={`${styles.cell} ${cell === null ? styles.blackCell : ""}`}
+                >
+                  {cell !== null && (
+                    <input
+                      value={cell}
+                      onChange={(e) =>
+                        handleLetterChange(r, c, e.target.value)
+                      }
+                      maxLength={1}
+                      className={styles.cellInput}
+                    />
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+
+        </div>
+
+        {/* RIGHT - CLUES */}
+        <div className={styles.clueCard}>
+
+          <div>
+            <h3>Across</h3>
+            {acrossClues.map((clue, index) => (
+              <div key={index} className={styles.clueRow}>
+                <span>{clue.number}.</span>
+                <input
+                  value={clue.clue}
+                  onChange={(e) => {
+                    const updated = [...acrossClues];
+                    updated[index].clue = e.target.value;
+                    setAcrossClues(updated);
+                  }}
+                />
               </div>
             ))}
           </div>
-        ))}
+
+          <div>
+            <h3>Down</h3>
+            {downClues.map((clue, index) => (
+              <div key={index} className={styles.clueRow}>
+                <span>{clue.number}.</span>
+                <input
+                  value={clue.clue}
+                  onChange={(e) => {
+                    const updated = [...downClues];
+                    updated[index].clue = e.target.value;
+                    setDownClues(updated);
+                  }}
+                />
+              </div>
+            ))}
+          </div>
+
+        </div>
       </div>
 
-      {/* CLUES UI */}
-      <h3>Across Clues</h3>
-      {acrossClues.map((clue, index) => (
-        <div key={index}>
-          {clue.number}.
-          <input
-            value={clue.clue}
-            onChange={(e) => {
-              const updated = [...acrossClues];
-              updated[index].clue = e.target.value;
-              setAcrossClues(updated);
-            }}
-          />
-        </div>
-      ))}
-
-      <h3>Down Clues</h3>
-      {downClues.map((clue, index) => (
-        <div key={index}>
-          {clue.number}.
-          <input
-            value={clue.clue}
-            onChange={(e) => {
-              const updated = [...downClues];
-              updated[index].clue = e.target.value;
-              setDownClues(updated);
-            }}
-          />
-        </div>
-      ))}
-
-      <button onClick={handleSave}>Save Puzzle</button>
+      <button className={styles.saveBtn} onClick={handleSave}>
+        Save Puzzle
+      </button>
     </div>
   );
 }

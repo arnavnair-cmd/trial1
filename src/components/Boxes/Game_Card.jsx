@@ -43,10 +43,7 @@ function Game_Card({ title, description, variant, route }) {
           onClick={handleStart}
         />
 
-        <Game_Button
-          text="Ranks"
-          onClick={() => router.push(`${route}/ranks`)}
-        />
+        
       </div>
     </div>
   );

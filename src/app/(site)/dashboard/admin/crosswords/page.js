@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import styles from "./AdminCrosswords.module.css";
 
 
 
@@ -33,43 +34,43 @@ export default function AdminCrosswordsPage() {
     setPuzzles(prev => prev.filter(p => p.id !== id));
   };
 
-  return (
-    <div>
-      <h2>Manage Crosswords</h2>
+ return (
+  <div className={styles.wrapper}>
+    <h2 className={styles.heading}>Manage Crosswords</h2>
 
-      <button
-        onClick={() =>
-          router.push("/dashboard/admin/crosswords/new")
-        }
-      >
-        Create Puzzle
-      </button>
+    <button
+      className={styles.createBtn}
+      onClick={() =>
+        router.push("/dashboard/admin/crosswords/new")
+      }
+    >
+      + Create Puzzle
+    </button>
 
-      <hr />
+    <hr className={styles.divider} />
 
-      {puzzles.length === 0 && <p>No puzzles yet.</p>}
+    {puzzles.length === 0 && (
+      <p className={styles.empty}>No puzzles yet.</p>
+    )}
 
+    <div className={styles.grid}>
       {puzzles.map((p) => (
-        <div key={p.id} style={{ marginBottom: "10px" }}>
-          <strong>{p.title}</strong>
+        <div key={p.id} className={styles.card}>
+          <strong className={styles.title}>
+            {p.title}
+          </strong>
 
-          <div>
+          <div className={styles.actions}>
             <button
-              onClick={() =>
-                router.push(
-                  `/dashboard/admin/crosswords/edit/${p.id}`
-                )
-              }
+              className={styles.deleteBtn}
+              onClick={() => deletePuzzle(p.id)}
             >
-              Edit
-            </button>
-
-            <button onClick={() => deletePuzzle(p.id)}>
               Delete
             </button>
           </div>
         </div>
       ))}
     </div>
-  );
+  </div>
+);
 }

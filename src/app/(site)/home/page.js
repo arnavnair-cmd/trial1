@@ -204,8 +204,8 @@ export default function HomePage() {
         showPopup && latestAnnouncement && (
           <div
             style={{
-              background: '#222',
-              border: '1px solid #555',
+              background: '#2dd058',
+              border: '1px solid #0b0b0b',
               padding: '20px',
               borderRadius: '10px',
               marginBottom: '30px',

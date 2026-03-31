@@ -6,10 +6,10 @@ function Footer() {
   return (
     <div>
       <p className={styles.footerdata}>
-        Contact: False number
+        
         <a href="#" className={styles.instaLink}>
-          <br />
-          Instagram
+
+          Instagram: @lingsociety
         </a>
       </p>
     </div>

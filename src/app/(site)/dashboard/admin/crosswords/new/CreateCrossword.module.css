@@ -1,0 +1,121 @@
+.container {
+    padding: 40px 80px;
+}
+
+/* Heading */
+.heading {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Title Input */
+.titleInput {
+    width: 300px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+}
+
+/* Layout */
+.mainGrid {
+    display: flex;
+    gap: 40px;
+}
+
+/* GRID CARD */
+.gridCard {
+  padding: 20px;
+  border-radius: 12px;
+  background: #f8f8ff;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+  display: inline-block; /* 🔥 FIXES STRETCHING */
+}
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 50px);
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+
+  border: 1px solid black;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: white;
+}
+
+/* INPUT */
+.cellInput {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  border: none;
+  outline: none;
+
+  background: transparent; /* 🔥 IMPORTANT */
+
+}
+
+/* BLACK CELL */
+.blackCell {
+    background: black;
+}
+
+/* INPUT */
+.cellInput {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: none;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* CLUE CARD */
+.clueCard {
+    flex: 1;
+    padding: 20px;
+    border-radius: 12px;
+    background: #f4f0ff;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.clueRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.clueRow input {
+    flex: 1;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* SAVE BUTTON */
+.saveBtn {
+    margin-top: 30px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    background: linear-gradient(90deg, #6d28d9, #9333ea);
+    color: white;
+    cursor: pointer;
+}
+
+.saveBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.35);
+}
